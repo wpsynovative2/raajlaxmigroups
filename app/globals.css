@@ -1,26 +1,153 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/* inline: font variables are set by next/font on <html> or on a page wrapper, so they must resolve where used */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-jost), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-marcellus), ui-serif, Georgia, serif;
+  --font-poppins: var(--font-poppins-family), ui-sans-serif, system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@theme {
+  /* Raajlaxmi Group corporate palette (taken from the WordPress kit, refined) */
+  --color-rust-50: #fbf3ee;
+  --color-rust-100: #f3e0d4;
+  --color-rust-500: #b45a2b;
+  --color-rust-600: #9e4c23;
+  --color-rust-700: #84401d;
+  --color-gold-300: #e2c88f;
+  --color-gold-400: #d4b373;
+  --color-gold-500: #c39f59;
+  --color-gold-600: #a8843f;
+  --color-navy-700: #1b2c52;
+  --color-navy-800: #15233f;
+  --color-navy-900: #0e1a33;
+  --color-navy-950: #09111f;
+  --color-cream-50: #fbf8f2;
+  --color-cream-100: #f6f0e4;
+  --color-ink: #1f2430;
+  --color-muted: #5b6170;
+
+  /* Acacia landing palette */
+  --color-olive-50: #fcf9de;
+  --color-olive-100: #f5f0c9;
+  --color-olive-600: #5a6430;
+  --color-olive-700: #4a5226;
+  --color-olive-800: #41491e;
+  --color-olive-900: #2c2618;
+
+
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-shimmer: shimmer 1.6s linear infinite;
+  --animate-fade-up: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-float-leaf: float-leaf 9s ease-in-out infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-100%);
+    }
+  }
+  @keyframes shimmer {
+    from {
+      background-position: -200% 0;
+    }
+    to {
+      background-position: 200% 0;
+    }
+  }
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes float-leaf {
+    0%,
+    100% {
+      transform: translateY(0) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-14px) rotate(8deg);
+    }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-white font-sans text-ink antialiased;
+  }
+  /* Anchor targets sit below the sticky header */
+  [id] {
+    scroll-margin-top: 6rem;
+  }
+  ::selection {
+    @apply bg-gold-300 text-navy-900;
+  }
+}
+
+@utility container-x {
+  @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+}
+@utility eyebrow {
+  @apply text-xs font-medium tracking-[0.25em] uppercase;
+}
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-sm px-6 py-3 text-sm font-medium tracking-wider uppercase transition duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-70;
+}
+@utility btn-primary {
+  @apply btn bg-rust-600 text-white hover:bg-rust-700 focus-visible:outline-rust-600;
+}
+@utility btn-gold {
+  @apply btn bg-gold-500 text-navy-950 hover:bg-gold-400 focus-visible:outline-gold-500;
+}
+@utility btn-outline {
+  @apply btn border border-rust-600 text-rust-600 hover:bg-rust-600 hover:text-white;
+}
+@utility btn-outline-light {
+  @apply btn border border-white/60 text-white hover:border-gold-400 hover:bg-white/10;
+}
+@utility field-input {
+  @apply w-full rounded-sm border border-black/15 bg-white px-4 py-3 text-[15px] text-ink transition outline-none placeholder:text-black/35 focus:border-gold-500 focus:ring-2 focus:ring-gold-500/25 aria-invalid:border-red-500;
+}
+@utility skeleton {
+  background: linear-gradient(90deg, rgb(0 0 0 / 0.06) 25%, rgb(0 0 0 / 0.12) 37%, rgb(0 0 0 / 0.06) 63%);
+  background-size: 400% 100%;
+  @apply animate-shimmer;
+}
+
+/* Scroll-reveal: elements start hidden only once JS has marked the document ready */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.js [data-reveal][data-visible] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .js [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
 }

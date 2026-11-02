@@ -1,6 +1,8 @@
-import { useId, type ComponentProps, type ReactNode } from "react";
+import { useId, useState, type ComponentProps, type ReactNode } from "react";
 import Spinner from "@/components/loading/Spinner";
+import { phoneError } from "@/lib/leads/phone";
 import type { LeadField, LeadState } from "@/lib/leads/schema";
+import { RECAPTCHA_SITE_KEY } from "./useLeadAction";
 
 type FieldProps = {
   name: LeadField;
@@ -9,6 +11,8 @@ type FieldProps = {
   required?: boolean;
   labelClassName?: string;
   inputClassName?: string;
+  /** Client-side check run on blur; returns an error message or undefined. */
+  validate?: (value: string) => string | undefined;
 } & Omit<ComponentProps<"input">, "name">;
 
 export function Field({
@@ -18,12 +22,16 @@ export function Field({
   required,
   labelClassName = "text-sm font-medium text-ink",
   inputClassName = "field-input",
+  validate,
   id,
+  onBlur,
+  onChange,
   ...input
 }: FieldProps) {
   const autoId = useId();
   const inputId = id ?? autoId;
-  const error = state.errors?.[name];
+  const [clientError, setClientError] = useState<string>();
+  const error = clientError ?? state.errors?.[name];
   return (
     <div className="flex flex-col gap-1.5">
       <label htmlFor={inputId} className={labelClassName}>
@@ -38,6 +46,15 @@ export function Field({
         aria-describedby={error ? `${inputId}-error` : undefined}
         defaultValue={state.values?.[name]}
         className={inputClassName}
+        onBlur={(event) => {
+          if (validate) setClientError(validate(event.currentTarget.value));
+          onBlur?.(event);
+        }}
+        onChange={(event) => {
+          // Clear the message as soon as the value becomes valid, but don't nag while typing.
+          if (validate && clientError && !validate(event.currentTarget.value)) setClientError(undefined);
+          onChange?.(event);
+        }}
         {...input}
       />
       {error && (
@@ -56,8 +73,27 @@ export const phoneInputProps = {
   autoComplete: "tel-national",
   maxLength: 16,
   pattern: "[0-9+\\s\\-]{10,16}",
-  title: "10-digit mobile number",
+  title: "10-digit Indian mobile number starting with 6, 7, 8 or 9",
+  validate: phoneError,
 } as const;
+
+/** Google requires this notice wherever the reCAPTCHA badge is hidden (see globals.css). */
+export function RecaptchaNotice({ className = "text-center text-[11px] text-muted" }: { className?: string }) {
+  if (!RECAPTCHA_SITE_KEY) return null;
+  return (
+    <p className={className}>
+      This site is protected by reCAPTCHA and the Google{" "}
+      <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="underline">
+        Privacy Policy
+      </a>{" "}
+      and{" "}
+      <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" className="underline">
+        Terms of Service
+      </a>{" "}
+      apply.
+    </p>
+  );
+}
 
 /** Invisible field bots tend to fill in; submissions with a value are discarded. */
 export function Honeypot() {

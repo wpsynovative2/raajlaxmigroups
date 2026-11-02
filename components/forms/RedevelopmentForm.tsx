@@ -1,14 +1,21 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
-import { submitLead } from "@/lib/leads/submit-lead";
-import { initialLeadState, type LeadState } from "@/lib/leads/schema";
+import { useEffect, useState } from "react";
 import { pushDataLayer } from "@/lib/analytics";
 import TrackingFields from "./TrackingFields";
-import { Field, FormMessage, FormSuccess, Honeypot, SubmitButton, phoneInputProps } from "./fields";
+import { useLeadAction } from "./useLeadAction";
+import {
+  Field,
+  FormMessage,
+  FormSuccess,
+  Honeypot,
+  RecaptchaNotice,
+  SubmitButton,
+  phoneInputProps,
+} from "./fields";
 
 function RedevelopmentFormInner({ onReset }: { onReset: () => void }) {
-  const [state, action, pending] = useActionState<LeadState, FormData>(submitLead, initialLeadState);
+  const [state, action, pending] = useLeadAction();
 
   useEffect(() => {
     if (state.status === "success") pushDataLayer({ event: "lead_submit", form: "redevelopment" });
@@ -31,6 +38,7 @@ function RedevelopmentFormInner({ onReset }: { onReset: () => void }) {
       <div className="sm:col-span-2">
         <SubmitButton pending={pending}>Request a free consultation</SubmitButton>
       </div>
+      <RecaptchaNotice className="text-center text-[11px] text-muted sm:col-span-2" />
     </form>
   );
 }

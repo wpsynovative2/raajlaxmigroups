@@ -69,7 +69,7 @@ export default function AcaciaThankYouPage() {
           pricing, availability and floor plans.
         </p>
         <p className="mt-5 animate-fade-up text-sm text-white/55 [animation-delay:260ms]">
-          Saphale, Palghar <span className="mx-2 text-gold-500">|</span> 1 &amp; 2 BHK homes and road-facing shops &amp; offices
+          Saphale, Palghar <span className="mx-2 text-gold-500">|</span> 1 BHK homes and road-facing offices
         </p>
         <div className="mt-9 flex animate-fade-up flex-wrap justify-center gap-3 [animation-delay:320ms]">
           <a
@@ -113,8 +113,8 @@ export default function AcaciaThankYouPage() {
           <div>
             <h3 className="font-display text-xl text-gold-300">Homes and businesses</h3>
             <p className="mt-2 text-sm leading-relaxed text-olive-50/80">
-              1 &amp; 2 BHK residences from {acacia.prices.residential} and road-facing shops &amp; offices from{" "}
-              {acacia.prices.commercial}.
+              1 BHK residences from {acacia.prices.oneBhk} and road-facing offices from {acacia.prices.office}.
+              2 BHK homes and shops are sold out.
             </p>
           </div>
           <div>

@@ -52,7 +52,7 @@ export default function AcaciaHeader() {
                 <a
                   href={`#${item.id}`}
                   aria-current={active === item.id ? "true" : undefined}
-                  className={`relative block rounded-full px-3.5 py-2 font-poppins text-[12px] font-medium tracking-wider uppercase transition ${
+                  className={`relative block rounded-full px-2.5 py-2 font-poppins text-[11px] font-medium tracking-wider uppercase transition xl:px-3.5 xl:text-[12px] ${
                     active === item.id ? "bg-olive-50 text-olive-800" : "text-olive-50/90 hover:text-white"
                   }`}
                 >

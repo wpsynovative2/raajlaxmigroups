@@ -36,5 +36,8 @@ export const requiredFields: Record<LeadFormId, LeadField[]> = {
   acacia: ["name", "phone", "consent"],
 };
 
+/** reCAPTCHA v3 action name for a form; the client and server must agree on it. */
+export const recaptchaAction = (form: LeadFormId) => `lead_${form}`;
+
 /** Pages a form may send the visitor to after a successful submission. */
 export const allowedRedirects = ["/acacia-thankyou/"] as const;

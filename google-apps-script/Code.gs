@@ -5,15 +5,23 @@
  *   1. Create a Google Sheet, then Extensions → Apps Script, and paste this file.
  *   2. Project Settings → Script properties, add:
  *        SHARED_SECRET  = same value as GOOGLE_SCRIPT_SECRET in the website's .env
- *        NOTIFY_EMAILS  = (optional) comma-separated emails to alert on every lead
- *   3. Deploy → New deployment → type "Web app"
+ *        NOTIFY_EMAILS  = (optional) comma-separated emails to alert on every lead;
+ *                         defaults to DEFAULT_NOTIFY_EMAILS below
+ *   3. Run testNotify once from the editor to grant the "send email" permission.
+ *   4. Deploy → New deployment → type "Web app"
  *        Execute as: Me      Who has access: Anyone
- *   4. Copy the /exec URL into GOOGLE_SCRIPT_URL in the website's .env.
+ *   5. Copy the /exec URL into GOOGLE_SCRIPT_URL in the website's .env.
+ *
+ * After editing this file: Deploy → Manage deployments → edit → Version: New version,
+ * so the existing /exec URL picks up the change.
  *
  * Each website form writes to its own tab ("Acacia Leads", "Redevelopment", …).
  * Tabs and header columns are created automatically; new fields add new columns.
  * Column order can be rearranged freely in the sheet: rows are matched by header name.
  */
+
+/** Every lead is emailed here unless the NOTIFY_EMAILS script property overrides it. */
+var DEFAULT_NOTIFY_EMAILS = 'info@raajlaxmigroup.com';
 
 var BASE_COLUMNS = [
   'submittedAt', 'name', 'phone', 'email', 'project', 'interest',
@@ -53,7 +61,12 @@ function doPost(e) {
     sheet.appendRow(row);
     lock.releaseLock();
 
-    notify_(props.getProperty('NOTIFY_EMAILS'), sheet.getName(), data);
+    // The lead is already saved, so a mail failure must not report an error (the visitor would resubmit).
+    try {
+      notify_(props.getProperty('NOTIFY_EMAILS') || DEFAULT_NOTIFY_EMAILS, sheet.getName(), data);
+    } catch (mailErr) {
+      console.error('Lead email failed: ' + mailErr);
+    }
     return json_({ ok: true });
   } catch (err) {
     try { lock.releaseLock(); } catch (ignored) {}
@@ -108,13 +121,39 @@ function ensureColumns_(sheet, data) {
 
 function notify_(emails, sheetName, data) {
   if (!emails) return;
-  var lines = Object.keys(data)
-    .filter(function (k) { return data[k] && k !== 'timestamp'; })
-    .map(function (k) { return labelOf_(k) + ': ' + data[k]; });
-  MailApp.sendEmail({
+  var keys = Object.keys(data).filter(function (k) { return data[k] && k !== 'timestamp'; });
+  var lines = keys.map(function (k) { return labelOf_(k) + ': ' + data[k]; });
+  var rows = keys.map(function (k) {
+    var value = escape_(data[k]);
+    if (k === 'phone') value = '<a href="tel:+91' + value + '">' + value + '</a>';
+    if (k === 'email') value = '<a href="mailto:' + value + '">' + value + '</a>';
+    return '<tr><td style="padding:6px 12px;border:1px solid #ddd;background:#f6f6f6;font-weight:bold;white-space:nowrap">' +
+      escape_(labelOf_(k)) + '</td><td style="padding:6px 12px;border:1px solid #ddd">' + value + '</td></tr>';
+  });
+  var message = {
     to: emails,
+    name: 'Raajlaxmi Website',
     subject: 'New lead – ' + sheetName + ' – ' + (data.name || '') + ' ' + (data.phone || ''),
     body: lines.join('\n'),
+    htmlBody: '<p>New enquiry from the <b>' + escape_(sheetName) + '</b> form:</p>' +
+      '<table style="border-collapse:collapse;font-family:Arial,sans-serif;font-size:14px">' + rows.join('') + '</table>',
+  };
+  // Hitting "Reply" answers the visitor directly when they left an email address.
+  if (data.email) message.replyTo = data.email;
+  MailApp.sendEmail(message);
+}
+
+function escape_(value) {
+  return String(value)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+/** Run once from the Apps Script editor to authorise sending mail and check delivery. */
+function testNotify() {
+  var emails = PropertiesService.getScriptProperties().getProperty('NOTIFY_EMAILS') || DEFAULT_NOTIFY_EMAILS;
+  notify_(emails, 'Test', {
+    submittedAt: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }),
+    name: 'Test Lead', phone: '9876543210', email: 'test@example.com', message: 'Test email from Apps Script.',
   });
 }
 

@@ -1,11 +1,17 @@
 "use client";
 
-import { useActionState, useId } from "react";
-import { submitLead } from "@/lib/leads/submit-lead";
-import { initialLeadState, type LeadState } from "@/lib/leads/schema";
+import { useId } from "react";
 import { acacia, interestOptions } from "@/lib/data/acacia";
 import TrackingFields from "@/components/forms/TrackingFields";
-import { Field, FormMessage, Honeypot, SubmitButton, phoneInputProps } from "@/components/forms/fields";
+import { useLeadAction } from "@/components/forms/useLeadAction";
+import {
+  Field,
+  FormMessage,
+  Honeypot,
+  RecaptchaNotice,
+  SubmitButton,
+  phoneInputProps,
+} from "@/components/forms/fields";
 
 const label = "text-[11px] font-semibold tracking-[0.14em] text-olive-800 uppercase";
 const input =
@@ -13,13 +19,13 @@ const input =
 
 /** Enquiry form for the Acacia landing page. A successful submission lands on /acacia-thankyou/. */
 export default function AcaciaLeadForm({
-  defaultInterest = "Residential",
+  defaultInterest = "1 BHK",
   source,
 }: {
   defaultInterest?: (typeof interestOptions)[number];
   source: string;
 }) {
-  const [state, action, pending] = useActionState<LeadState, FormData>(submitLead, initialLeadState);
+  const [state, action, pending] = useLeadAction();
   const id = useId();
 
   return (
@@ -124,6 +130,7 @@ export default function AcaciaLeadForm({
           Send enquiry
         </SubmitButton>
       </div>
+      <RecaptchaNotice className="text-center text-[11px] text-olive-900/60 sm:col-span-2" />
     </form>
   );
 }

@@ -8,6 +8,17 @@ import fitnessZone from "@/public/images/acacia/amenities/fitness-zone.jpg";
 import kidsPlay from "@/public/images/acacia/amenities/kids-play-area.jpg";
 import amphitheatre from "@/public/images/acacia/amenities/amphitheatre.jpg";
 import starGazing from "@/public/images/acacia/amenities/star-gazing.jpg";
+import galleryAcacia from "@/public/images/acacia/gallery/acacia-elevation.jpg";
+import galleryAerialDusk from "@/public/images/acacia/gallery/aerial-dusk.jpg";
+import galleryFront from "@/public/images/acacia/gallery/elevation-front.jpg";
+import galleryCorner from "@/public/images/acacia/gallery/elevation-corner.jpg";
+import gallerySiteTop from "@/public/images/acacia/gallery/site-top-view.jpg";
+import gallerySide from "@/public/images/acacia/gallery/elevation-side.jpg";
+import galleryPodium from "@/public/images/acacia/gallery/podium-amenities.jpg";
+import galleryAerialDay from "@/public/images/acacia/gallery/aerial-day.jpg";
+import galleryWide from "@/public/images/acacia/gallery/elevation-wide.jpg";
+import galleryAerialOverview from "@/public/images/acacia/gallery/aerial-overview.jpg";
+import galleryRoadside from "@/public/images/acacia/gallery/elevation-roadside.jpg";
 
 export const acacia = {
   name: "Rajlaxmi Acacia",
@@ -29,9 +40,10 @@ export const acacia = {
     facebook: "https://www.facebook.com/search/top?q=magnus%20realtor",
     instagram: "https://www.instagram.com/magnus_realtor",
   },
+  // Only 1 BHK homes and offices are still on sale; 2 BHK homes and shops are sold out.
   prices: {
-    residential: "₹25.48L*",
-    commercial: "₹14.50L*",
+    oneBhk: "₹25.47L*",
+    office: "₹21.50L*",
   },
 } as const;
 
@@ -41,6 +53,7 @@ export const acaciaNav = [
   { id: "highlights", label: "Highlights" },
   { id: "amenities", label: "Amenities" },
   { id: "configuration", label: "Configuration" },
+  { id: "gallery", label: "Gallery" },
   { id: "connectivity", label: "Connectivity" },
   { id: "contact-us", label: "Contact us" },
 ] as const;
@@ -123,11 +136,42 @@ export const amenities: { title: string; text: string; image: StaticImageData }[
   },
 ];
 
-export const configurations = [
-  { tag: "Popular", title: "Shop spaces", text: "Ideal for retail & brands", interest: "Shops & Offices" },
-  { tag: "Premium", title: "Office spaces", text: "Designed for modern businesses", interest: "Shops & Offices" },
-  { tag: "Luxury", title: "Residential spaces", text: "Comfort meets elegance", interest: "Residential" },
-] as const;
+export type GalleryImage = { image: StaticImageData; caption: string; alt: string };
+
+/**
+ * Raajlaxmi Park renders. The grid gives the first image a large tile and the 2nd and 7th
+ * wide tiles, so keep panoramic shots in those slots.
+ */
+export const gallery: GalleryImage[] = [
+  { image: galleryAcacia, caption: "Acacia elevation", alt: "Acacia: road-facing building with shops on the ground floor" },
+  { image: galleryAerialDusk, caption: "Raajlaxmi Park at dusk", alt: "Aerial view of Raajlaxmi Park lit up at dusk" },
+  { image: galleryFront, caption: "Residential elevation", alt: "Front elevation of a Raajlaxmi Park residential building" },
+  { image: galleryCorner, caption: "Corner view", alt: "Corner view of a Raajlaxmi Park residential building" },
+  { image: gallerySiteTop, caption: "Bird’s-eye view", alt: "Top-down view of the Raajlaxmi Park layout and landscaping" },
+  { image: gallerySide, caption: "Side elevation", alt: "Side elevation of a Raajlaxmi Park residential building" },
+  { image: galleryPodium, caption: "Podium & amenities", alt: "Landscaped podium with swimming pool and play area between the buildings" },
+  { image: galleryAerialDay, caption: "Aerial view", alt: "Daytime aerial view of the Raajlaxmi Park buildings" },
+  { image: galleryWide, caption: "Full elevation", alt: "Full-length elevation of a Raajlaxmi Park residential building" },
+  { image: galleryAerialOverview, caption: "Project overview", alt: "Aerial overview of Raajlaxmi Park and its surroundings" },
+  { image: galleryRoadside, caption: "Roadside view", alt: "Raajlaxmi Park building seen from the road with parking in front" },
+];
+
+export const interestOptions = ["1 BHK", "Office"] as const;
+
+type Configuration = {
+  title: string;
+  text: string;
+} & (
+  | { soldOut?: false; price: string; interest: (typeof interestOptions)[number] }
+  | { soldOut: true }
+);
+
+export const configurations: Configuration[] = [
+  { title: "1 BHK residences", text: "Comfort meets elegance", price: acacia.prices.oneBhk, interest: "1 BHK" },
+  { title: "Office spaces", text: "Designed for modern businesses", price: acacia.prices.office, interest: "Office" },
+  { title: "2 BHK residences", text: "Spacious homes for growing families", soldOut: true },
+  { title: "Shop spaces", text: "Ideal for retail & brands", soldOut: true },
+];
 
 export type NearbyIcon = "health" | "temple" | "cart" | "sport" | "train";
 
@@ -138,5 +182,3 @@ export const nearby: { icon: NearbyIcon; title: string; places: string[] }[] = [
   { icon: "temple", title: "Religious", places: ["Datta Mandir"] },
   { icon: "sport", title: "Sports & recreation", places: ["OMTEX ICWC Cricket Institute"] },
 ];
-
-export const interestOptions = ["Residential", "Shops & Offices"] as const;

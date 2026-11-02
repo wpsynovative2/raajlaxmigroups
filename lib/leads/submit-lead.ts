@@ -1,8 +1,11 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { normaliseIndianMobile, phoneError } from "./phone";
+import { verifyRecaptcha } from "./recaptcha";
 import {
   allowedRedirects,
+  recaptchaAction,
   requiredFields,
   sheetNames,
   type LeadField,
@@ -40,13 +43,6 @@ function text(formData: FormData, key: string, max = 500) {
   return typeof value === "string" ? value.trim().slice(0, max) : "";
 }
 
-/** Accepts 10-digit Indian mobiles, with or without +91 / 0 prefix and spaces. */
-function normalisePhone(raw: string) {
-  const digits = raw.replace(/\D/g, "");
-  const local = digits.length > 10 ? digits.replace(/^(91|0)/, "") : digits;
-  return /^[6-9]\d{9}$/.test(local) ? local : null;
-}
-
 function validate(form: LeadFormId, values: Record<LeadField, string>) {
   const errors: Partial<Record<LeadField, string>> = {};
 
@@ -54,9 +50,8 @@ function validate(form: LeadFormId, values: Record<LeadField, string>) {
     if (!values[field]) errors[field] = "This field is required.";
   }
   if (values.name && values.name.length < 2) errors.name = "Please enter a valid name.";
-  if (values.phone && !normalisePhone(values.phone)) {
-    errors.phone = "Enter a valid 10-digit mobile number.";
-  }
+  const phoneMessage = phoneError(values.phone);
+  if (phoneMessage) errors.phone = phoneMessage;
   if (values.email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(values.email)) {
     errors.email = "Enter a valid email address.";
   }
@@ -123,6 +118,15 @@ export async function submitLead(_prev: LeadState, formData: FormData): Promise<
     return { status: "error", message: "Please check the highlighted fields.", errors, values };
   }
 
+  const human = await verifyRecaptcha(text(formData, "recaptchaToken", 4000), recaptchaAction(form));
+  if (!human) {
+    return {
+      status: "error",
+      message: "We couldn't verify your submission. Please try again, or call us directly.",
+      values,
+    };
+  }
+
   const submittedAt = new Date();
   const payload: Record<string, string> = {
     sheet: sheetNames[form],
@@ -130,7 +134,7 @@ export async function submitLead(_prev: LeadState, formData: FormData): Promise<
     submittedAt: submittedAt.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
     timestamp: submittedAt.toISOString(),
     ...values,
-    phone: normalisePhone(values.phone) ?? values.phone,
+    phone: normaliseIndianMobile(values.phone) ?? values.phone,
     consent: values.consent ? "Yes" : "",
   };
   for (const key of TRACKING_FIELDS) {

@@ -1,15 +1,15 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
-import { submitLead } from "@/lib/leads/submit-lead";
-import { initialLeadState, type LeadState } from "@/lib/leads/schema";
+import { useEffect, useState } from "react";
 import { pushDataLayer } from "@/lib/analytics";
 import TrackingFields from "./TrackingFields";
+import { useLeadAction } from "./useLeadAction";
 import {
   Field,
   FormMessage,
   FormSuccess,
   Honeypot,
+  RecaptchaNotice,
   SubmitButton,
   phoneInputProps,
 } from "./fields";
@@ -26,10 +26,7 @@ function EnquiryFormInner({
   submitLabel = "Submit",
   onReset,
 }: Props & { onReset: () => void }) {
-  const [state, action, pending] = useActionState<LeadState, FormData>(
-    submitLead,
-    initialLeadState,
-  );
+  const [state, action, pending] = useLeadAction();
 
   useEffect(() => {
     if (state.status === "success") pushDataLayer({ event: "lead_submit", form, project });
@@ -51,6 +48,7 @@ function EnquiryFormInner({
       <p className="text-center text-xs text-muted">
         We respect your privacy. Your details are only used to contact you about our projects.
       </p>
+      <RecaptchaNotice />
     </form>
   );
 }

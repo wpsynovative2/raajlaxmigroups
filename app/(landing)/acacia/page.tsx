@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import Image from "next/image";
+import AcaciaGallery from "@/components/acacia/AcaciaGallery";
 import AcaciaHeader from "@/components/acacia/AcaciaHeader";
 import AcaciaIcon from "@/components/acacia/AcaciaIcons";
 import AcaciaLeadForm from "@/components/acacia/AcaciaLeadForm";
@@ -23,13 +24,13 @@ import reraLogo from "@/public/images/acacia/maharera-logo.png";
 import reraQr from "@/public/images/acacia/rera-qr-code.png";
 
 export const metadata: Metadata = {
-  title: { absolute: "Rajlaxmi Acacia, Saphale | 1 & 2 BHK from ₹25.48L* | Shops & Offices from ₹14.50L*" },
+  title: { absolute: "Rajlaxmi Acacia, Saphale | 1 BHK from ₹25.47L* | Offices from ₹21.50L*" },
   description:
-    "Rajlaxmi Acacia at Raajlaxmi Park, Saphale: OC-received 1 & 2 BHK homes from ₹25.48L* and road-facing shops & offices from ₹14.50L*, a 5-minute walk from Saphale station. MahaRERA P99000056103.",
+    "Rajlaxmi Acacia at Raajlaxmi Park, Saphale: OC-received 1 BHK homes from ₹25.47L* and road-facing offices from ₹21.50L*, a 5-minute walk from Saphale station. 2 BHK homes and shops sold out. MahaRERA P99000056103.",
   alternates: { canonical: "/acacia/" },
   openGraph: {
     title: "Rajlaxmi Acacia, Saphale",
-    description: "1 & 2 BHK homes from ₹25.48L* and road-facing shops & offices from ₹14.50L*.",
+    description: "1 BHK homes from ₹25.47L* and road-facing offices from ₹21.50L*.",
     images: ["/images/og/acacia-og.jpg"],
   },
 };
@@ -66,20 +67,48 @@ export default function AcaciaPage() {
           {/* Hero */}
           <section aria-labelledby="acacia-hero-title" className="relative overflow-hidden">
             <h1 id="acacia-hero-title" className="sr-only">
-              Codename Acacia at Raajlaxmi Park, Saphale: elegant 1 &amp; 2 BHK residences starting from{" "}
-              {acacia.prices.residential}, shops &amp; offices starting from {acacia.prices.commercial}
+              Codename Acacia at Raajlaxmi Park, Saphale: elegant 1 BHK residences starting from{" "}
+              {acacia.prices.oneBhk}, offices starting from {acacia.prices.office}. 2 BHK homes and shops are sold
+              out.
             </h1>
 
-            {/* Phones: the brochure artwork with prices built in */}
+            {/* Phones: the brochure artwork. Its printed prices are out of date, so a panel matching the
+                arch's olive gradient covers them and carries live text instead. */}
             <div className="bg-[#6edbfc] pt-20 md:hidden">
-              <Image
-                src={heroMobile}
-                alt=""
-                preload
-                placeholder="blur"
-                sizes="100vw"
-                className="w-full"
-              />
+              <div className="@container relative">
+                <Image
+                  src={heroMobile}
+                  alt=""
+                  preload
+                  placeholder="blur"
+                  sizes="100vw"
+                  className="w-full"
+                />
+                <div
+                  aria-hidden="true"
+                  className="absolute top-[14%] left-[27%] flex h-[27.6%] w-[52%] flex-col items-center justify-center bg-[linear-gradient(to_bottom,transparent,rgb(20_25_0/0.3)),linear-gradient(to_right,#4f591c,#85893c)] text-center font-poppins text-white [mask-composite:intersect] [mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent),linear-gradient(to_bottom,transparent,black_5%,black_95%,transparent)]"
+                >
+                  <p className="text-[3.6cqw] leading-none tracking-wide uppercase">Elegant 1 BHK</p>
+                  <p className="mt-[0.6cqw] text-[5.2cqw] leading-none tracking-wide uppercase">Residential</p>
+                  <p className="mt-[1cqw] text-[1.5cqw] leading-none tracking-[0.6em] text-white/90 uppercase">
+                    Starting from
+                  </p>
+                  <p className="mt-[0.8cqw] bg-linear-to-b from-[#fbe7a8] to-[#d8a948] bg-clip-text text-[7cqw] leading-none font-bold text-transparent">
+                    {acacia.prices.oneBhk}
+                  </p>
+                  <FloretDivider className="my-[1.4cqw] w-[60%] text-[#e8cf8f]" />
+                  <p className="text-[5.2cqw] leading-none tracking-wide uppercase">Offices</p>
+                  <p className="mt-[1cqw] text-[1.5cqw] leading-none tracking-[0.6em] text-white/90 uppercase">
+                    Starting from
+                  </p>
+                  <p className="mt-[0.8cqw] bg-linear-to-b from-[#fbe7a8] to-[#d8a948] bg-clip-text text-[7cqw] leading-none font-bold text-transparent">
+                    {acacia.prices.office}
+                  </p>
+                  <p className="mt-[1.6cqw] rounded-full border border-white/40 px-[2cqw] py-[0.6cqw] text-[1.9cqw] leading-none tracking-wider uppercase">
+                    2 BHK &amp; shops sold out
+                  </p>
+                </div>
+              </div>
             </div>
 
             {/* Tablet & desktop: artwork with live text over the arch */}
@@ -116,13 +145,16 @@ export default function AcaciaPage() {
               <div className="absolute top-[19%] bottom-[9%] left-[7.4%] flex w-[26.8%] animate-fade-up flex-col items-center justify-center gap-[1.6cqw]">
                 <Image src={plaque} alt="Codename Acacia" sizes="22vw" className="w-[78%] drop-shadow-xl" />
                 <p className="font-poppins text-[1.25cqw] font-medium tracking-[0.08em] text-white uppercase">
-                  Elegant 1 &amp; 2 BHK
+                  Elegant 1 BHK
                 </p>
                 <div className="-mt-[1.2cqw]">
-                  <Price label="Residential" value={acacia.prices.residential} />
+                  <Price label="Residential" value={acacia.prices.oneBhk} />
                 </div>
                 <FloretDivider className="w-[45%] text-[#e8cf8f]" />
-                <Price label="Shops & offices" value={acacia.prices.commercial} />
+                <Price label="Offices" value={acacia.prices.office} />
+                <p className="-mt-[0.4cqw] rounded-full border border-white/40 px-[1cqw] py-[0.3cqw] font-poppins text-[0.75cqw] tracking-[0.12em] text-white uppercase">
+                  2 BHK &amp; shops sold out
+                </p>
                 <CallbackButton
                   source="Hero"
                   className="mt-[0.4cqw] rounded-full bg-olive-50 px-[1.8cqw] py-[0.7cqw] font-poppins text-[0.95cqw] font-semibold tracking-wider text-olive-800 uppercase shadow-lg transition hover:bg-white"
@@ -265,18 +297,21 @@ export default function AcaciaPage() {
             </div>
           </section>
 
-          {/* Shops & offices */}
+          {/* Offices (shops are sold out) */}
           {/* Laid out like the old site: price and copy sit over the artwork, either side of the shopper */}
           <section className="relative bg-olive-50 bg-[url('/images/acacia/leaf-pattern.webp')] bg-[length:900px_auto]">
             {/* Phones: the overlay text would be too small, so it stacks above the artwork */}
             <div className="container-x pt-12 text-center md:hidden" data-reveal>
-              <p className="font-poppins text-2xl font-medium tracking-wide text-olive-800 uppercase">Shops &amp; offices</p>
+              <p className="font-poppins text-2xl font-medium tracking-wide text-olive-800 uppercase">Office spaces</p>
               <p className="mt-1 font-poppins text-[11px] font-medium tracking-[0.35em] text-olive-800 uppercase">
                 Starting from
               </p>
-              <p className="mt-1 font-poppins text-5xl font-medium text-[#4a2e22]">{acacia.prices.commercial}</p>
+              <p className="mt-1 font-poppins text-5xl font-medium text-[#4a2e22]">{acacia.prices.office}</p>
+              <p className="mt-3 inline-block rounded-full border border-olive-800/30 px-3 py-1 font-poppins text-[11px] font-medium tracking-[0.2em] text-olive-800 uppercase">
+                Shops sold out
+              </p>
               <p className="mx-auto mt-4 max-w-sm font-poppins text-sm leading-relaxed text-olive-900/85">
-                Give your business an address that works for you. Rajlaxmi Acacia offers road-facing commercial spaces
+                Give your business an address that works for you. Rajlaxmi Acacia offers road-facing office spaces
                 designed for visibility, accessibility, and everyday convenience.
               </p>
             </div>
@@ -291,20 +326,23 @@ export default function AcaciaPage() {
               />
               <div className="absolute top-[11%] left-[10%] hidden w-[17.5%] text-center whitespace-nowrap md:block" data-reveal>
                 <p className="font-poppins text-[2cqw] leading-tight font-medium tracking-wide text-olive-800 uppercase [text-shadow:0_0_12px_#fcf9de]">
-                  Shops &amp; offices
+                  Office spaces
                 </p>
                 <p className="mt-[0.3cqw] font-poppins text-[0.78cqw] font-medium tracking-[0.35em] text-olive-800 uppercase">
                   Starting from
                 </p>
                 <p className="font-poppins text-[3.3cqw] leading-tight font-medium text-[#4a2e22]">
-                  {acacia.prices.commercial}
+                  {acacia.prices.office}
+                </p>
+                <p className="mt-[0.4cqw] inline-block rounded-full border border-olive-800/30 bg-olive-50/70 px-[0.8cqw] py-[0.25cqw] font-poppins text-[0.7cqw] font-medium tracking-[0.2em] text-olive-800 uppercase">
+                  Shops sold out
                 </p>
               </div>
               <p
                 className="absolute top-[10%] right-[8.5%] hidden w-[18.5%] text-right font-poppins text-[0.82cqw] leading-[1.5] text-olive-900 md:block"
                 data-reveal
               >
-                Give your business an address that works for you. Rajlaxmi Acacia offers road-facing commercial spaces
+                Give your business an address that works for you. Rajlaxmi Acacia offers road-facing office spaces
                 designed for visibility, accessibility, and everyday convenience.
               </p>
             </div>
@@ -316,33 +354,74 @@ export default function AcaciaPage() {
           <LeafSection id="configuration">
             <div className="container-x">
               <AcaciaTitle>Configuration</AcaciaTitle>
-              <div className="mt-12 grid gap-6 md:grid-cols-3">
+              <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
                 {configurations.map((config, i) => (
                   <article
                     key={config.title}
                     data-reveal
                     style={{ "--reveal-delay": `${i * 100}ms` } as CSSProperties}
-                    className="relative overflow-hidden rounded-xl bg-olive-800 p-8 text-olive-50 shadow-xl"
+                    className={`relative flex flex-col overflow-hidden rounded-xl p-8 shadow-xl ${
+                      config.soldOut ? "bg-olive-800/55 text-olive-50/85" : "bg-olive-800 text-olive-50"
+                    }`}
                   >
                     <span className="absolute -top-6 -right-2 font-poppins text-8xl font-bold text-white/5">0{i + 1}</span>
-                    <span className="inline-block border border-olive-50/40 px-3 py-1 font-poppins text-[11px] tracking-[0.2em] uppercase">
-                      {config.tag}
+                    <span
+                      className={`self-start border px-3 py-1 font-poppins text-[11px] tracking-[0.2em] uppercase ${
+                        config.soldOut ? "border-transparent bg-[#4a2e22] text-white" : "border-olive-50/40"
+                      }`}
+                    >
+                      {config.soldOut ? "Sold out" : "Now selling"}
                     </span>
                     <h3 className="mt-5 font-poppins text-2xl font-semibold">{config.title}</h3>
                     <p className="mt-1 text-sm text-olive-50/70">{config.text}</p>
                     <div className="mt-6 h-px w-16 bg-olive-50/30" />
-                    <CallbackButton
-                      source={`Configuration: ${config.title}`}
-                      interest={config.interest}
-                      className="mt-6 flex w-full items-center justify-center gap-2 border border-olive-50/40 py-3 font-poppins text-xs font-medium tracking-[0.2em] uppercase transition hover:bg-olive-50 hover:text-olive-800"
-                    >
-                      Get details <ArrowRightIcon className="size-4" />
-                    </CallbackButton>
+                    {config.soldOut ? (
+                      <>
+                        <p className="my-6 font-poppins text-sm text-olive-50/70">All units sold</p>
+                        <p className="mt-auto flex w-full items-center justify-center border border-dashed border-olive-50/30 py-3 font-poppins text-xs font-medium tracking-[0.2em] text-olive-50/60 uppercase">
+                          Sold out
+                        </p>
+                      </>
+                    ) : (
+                      <>
+                        <p className="my-6 font-poppins">
+                          <span className="block text-[11px] tracking-[0.3em] text-olive-50/70 uppercase">Starting from</span>
+                          <span className="text-3xl font-semibold text-[#f1d58c]">{config.price}</span>
+                        </p>
+                        <CallbackButton
+                          source={`Configuration: ${config.title}`}
+                          interest={config.interest}
+                          className="mt-auto flex w-full items-center justify-center gap-2 border border-olive-50/40 py-3 font-poppins text-xs font-medium tracking-[0.2em] uppercase transition hover:bg-olive-50 hover:text-olive-800"
+                        >
+                          Get details <ArrowRightIcon className="size-4" />
+                        </CallbackButton>
+                      </>
+                    )}
                   </article>
                 ))}
               </div>
             </div>
           </LeafSection>
+
+          <BorderStrip />
+
+          {/* Gallery */}
+          <section id="gallery" className="bg-olive-800 py-16 sm:py-24">
+            <div className="container-x">
+              <div className="flex flex-wrap items-end justify-between gap-4">
+                <AcaciaTitle tone="light">Gallery</AcaciaTitle>
+                <p className="font-poppins text-sm text-olive-50/70" data-reveal>
+                  Select any image to view it full screen
+                </p>
+              </div>
+              <div className="mt-10" data-reveal>
+                <AcaciaGallery />
+              </div>
+              <p className="mt-6 text-xs text-olive-50/50">
+                Images are artist’s impressions of Raajlaxmi Park and are for representation purposes only.
+              </p>
+            </div>
+          </section>
 
           <BorderStrip />
 

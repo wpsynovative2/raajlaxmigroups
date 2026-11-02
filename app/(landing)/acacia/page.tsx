@@ -12,7 +12,7 @@ import { AcaciaTitle, BorderStrip, FloretDivider, LeafSection } from "@/componen
 import Carousel from "@/components/ui/Carousel";
 import { ArrowRightIcon, FacebookIcon, InstagramIcon, MailIcon, PhoneIcon, PinIcon, WhatsAppIcon } from "@/components/ui/Icons";
 import MapEmbed from "@/components/ui/MapEmbed";
-import { acacia, amenities, configurations, highlights, nearby } from "@/lib/data/acacia";
+import { acacia, amenities, configurations, highlights, nearby, overviewPoints } from "@/lib/data/acacia";
 import { telHref, whatsappHref } from "@/lib/site";
 import heroDesktop from "@/public/images/acacia/hero-desktop.webp";
 import heroMobile from "@/public/images/acacia/hero-mobile.jpg";
@@ -22,6 +22,8 @@ import shopsOffices from "@/public/images/acacia/shops-offices.webp";
 import groupLogo from "@/public/images/brand/raajlaxmi-group-logo.webp";
 import reraLogo from "@/public/images/acacia/maharera-logo.png";
 import reraQr from "@/public/images/acacia/rera-qr-code.png";
+import overviewMain from "@/public/images/acacia/gallery/acacia-elevation.jpg";
+import overviewInset from "@/public/images/acacia/gallery/podium-amenities.jpg";
 
 export const metadata: Metadata = {
   title: { absolute: "Rajlaxmi Acacia, Saphale | 1 BHK from ₹25.47L* | Offices from ₹21.50L*" },
@@ -169,35 +171,63 @@ export default function AcaciaPage() {
 
           {/* Overview + About */}
           <LeafSection id="overview">
-            <div className="container-x">
-              <AcaciaTitle align="right">Overview</AcaciaTitle>
-              <div className="mt-8 max-w-4xl" data-reveal>
-                <h3 className="font-poppins text-lg font-semibold tracking-wide text-olive-800 uppercase">
-                  The Acacia experience
-                </h3>
-                <p className="mt-4 text-lg leading-relaxed text-olive-900/85">
-                  Rajlaxmi Acacia brings together thoughtfully planned homes and commercial spaces in a road-facing
-                  development designed around comfort, convenience, and everyday living. With an{" "}
-                  <strong className="font-semibold text-olive-800">OC received</strong> status,{" "}
-                  <strong className="font-semibold text-olive-800">ready amenities</strong>, and a{" "}
-                  <strong className="font-semibold text-olive-800">ready sample building</strong>, the project offers
-                  a well-established setting for modern lifestyles.
-                </p>
-                <p className="mt-4 text-lg leading-relaxed text-olive-900/85">
-                  From a Ganpati Mandir within the complex to thoughtfully planned recreational and community spaces,
-                  every element is designed to make everyday life more enjoyable, convenient, and connected.
+            <div className="container-x grid items-center gap-14 lg:grid-cols-2 lg:gap-16">
+              <div>
+                <AcaciaTitle>Overview</AcaciaTitle>
+                <div data-reveal>
+                  <p className="mt-6 font-poppins text-sm font-semibold tracking-[0.2em] text-olive-700 uppercase">
+                    The Acacia experience
+                  </p>
+                  <p className="mt-2 text-lg leading-relaxed text-olive-900/85">
+                    Thoughtfully planned homes and offices in a road-facing development at Raajlaxmi Park, Saphale.
+                  </p>
+                </div>
+                <ul className="mt-8 space-y-5" data-reveal>
+                  {overviewPoints.map((point) => (
+                    <li key={point.title} className="flex gap-4">
+                      <span className="grid size-11 shrink-0 place-items-center rounded-full bg-olive-800 text-olive-50">
+                        <AcaciaIcon name={point.icon} className="size-5" />
+                      </span>
+                      <div>
+                        <h3 className="font-poppins text-base font-semibold text-olive-900">{point.title}</h3>
+                        <p className="mt-0.5 text-[15px] leading-snug text-olive-900/70">{point.text}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+                <CallbackButton
+                  source="Overview"
+                  className="mt-9 inline-flex items-center gap-2 rounded-full bg-olive-800 px-7 py-3 font-poppins font-semibold text-olive-50 transition hover:bg-olive-900"
+                >
+                  Book a site visit <ArrowRightIcon className="size-4" />
+                </CallbackButton>
+              </div>
+
+              <div className="relative mx-auto w-full max-w-xl pb-10 lg:pb-12" data-reveal>
+                <div aria-hidden="true" className="absolute inset-0 bottom-10 translate-x-4 translate-y-4 rounded-2xl border-2 border-olive-800/20 lg:bottom-12" />
+                <div className="relative aspect-[5/4] overflow-hidden rounded-2xl shadow-2xl">
+                  <Image
+                    src={overviewMain}
+                    alt="Rajlaxmi Acacia: road-facing building with shops on the ground floor"
+                    fill
+                    placeholder="blur"
+                    sizes="(min-width: 1024px) 45vw, 90vw"
+                    className="object-cover object-[35%_center]"
+                  />
+                </div>
+                <div className="absolute bottom-0 -left-2 w-[46%] overflow-hidden rounded-xl border-4 border-olive-50 shadow-xl sm:-left-6">
+                  <Image
+                    src={overviewInset}
+                    alt="Landscaped podium with swimming pool and play area"
+                    placeholder="blur"
+                    sizes="(min-width: 1024px) 22vw, 45vw"
+                    className="aspect-[4/3] w-full object-cover"
+                  />
+                </div>
+                <p className="absolute top-4 right-4 rounded-full bg-olive-800/90 px-4 py-2 font-poppins text-xs font-semibold tracking-[0.15em] text-olive-50 uppercase shadow-lg backdrop-blur">
+                  OC received
                 </p>
               </div>
-              <ul className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4" data-reveal>
-                {["OC received", "Ready amenities", "Sample building ready", "5 min from Saphale station"].map((fact) => (
-                  <li
-                    key={fact}
-                    className="rounded-xl border border-olive-800/15 bg-white/70 px-4 py-4 text-center font-poppins text-sm font-medium text-olive-800 backdrop-blur"
-                  >
-                    {fact}
-                  </li>
-                ))}
-              </ul>
             </div>
 
             <div id="about-us" className="container-x mt-20 grid items-center gap-10 sm:mt-28 lg:grid-cols-2">
@@ -220,7 +250,7 @@ export default function AcaciaPage() {
                   Who am I? <ArrowRightIcon className="size-4" />
                 </CallbackButton>
               </div>
-              <div data-reveal>
+              <div data-reveal className="lg:order-first">
                 <Image
                   src={hands}
                   alt="Codename Acacia plaque held in sculpted hands above a bed of greenery"
@@ -286,9 +316,8 @@ export default function AcaciaPage() {
                           className="object-cover transition duration-700 hover:scale-105"
                         />
                       </div>
-                      <figcaption className="mt-6 px-2 text-center">
+                      <figcaption className="mt-5 px-2 text-center">
                         <h3 className="font-poppins text-xl font-semibold text-white">{amenity.title}</h3>
-                        <p className="mt-2 text-sm leading-relaxed text-olive-50/75">{amenity.text}</p>
                       </figcaption>
                     </figure>
                   ))}

@@ -60,6 +60,15 @@ export const acaciaNav = [
 
 export type HighlightIcon = "temple" | "business" | "pool" | "family" | "shield" | "map";
 
+export const overviewPoints: { icon: HighlightIcon | NearbyIcon; title: string; text: string }[] = [
+  { icon: "shield", title: "OC received", text: "Occupancy certificate in hand, so there’s no wait on approvals." },
+  { icon: "pool", title: "Ready amenities", text: "Pool, clubhouse, fitness zone and more, already in place." },
+  { icon: "business", title: "Sample building ready", text: "Walk through a finished sample building before you decide." },
+  { icon: "temple", title: "Ganpati Mandir", text: "A dedicated mandir within the complex." },
+  { icon: "map", title: "Road-facing address", text: "Homes and offices planned around comfort and everyday convenience." },
+  { icon: "train", title: "5 min from Saphale station", text: "An easy walk to the railway station, market and daily essentials." },
+];
+
 export const highlights: { icon: HighlightIcon; title: string; text: string }[] = [
   {
     icon: "temple",
@@ -93,45 +102,37 @@ export const highlights: { icon: HighlightIcon; title: string; text: string }[] 
   },
 ];
 
-export const amenities: { title: string; text: string; image: StaticImageData }[] = [
+export const amenities: { title: string; image: StaticImageData }[] = [
   {
     title: "Swimming pool",
-    text: "A refreshing escape within the development, the perfect setting to relax, recharge and make a splash whenever you want.",
     image: pool,
   },
   {
     title: "Indoor games arena",
-    text: "Enjoy leisure time with a variety of indoor games in a space built for entertainment, competition and social bonding.",
     image: indoorGames,
   },
   {
     title: "Jogging & walking track",
-    text: "Begin your mornings with movement or take a relaxed evening stroll along a track that keeps you active and outdoors.",
     image: joggingTrack,
   },
   {
     title: "Clubhouse",
-    text: "A space to come together, unwind and make everyday leisure more enjoyable, whether it’s a quiet evening or time with your community.",
     image: clubhouse,
   },
   {
     title: "Fitness zone",
-    text: "Keep your routine close to home with a dedicated space that makes staying active easy and part of your everyday lifestyle.",
     image: fitnessZone,
   },
   {
     title: "Kids’ play area",
-    text: "A lively space where little ones can run, play and discover: more fun, more friendships and carefree childhood moments.",
     image: kidsPlay,
   },
   {
     title: "Amphitheatre",
-    text: "A vibrant gathering space for performances, celebrations and community moments, bringing people together for evenings worth remembering.",
     image: amphitheatre,
   },
   {
     title: "Star gazing point",
-    text: "Slow down, look up and leave the everyday behind at a peaceful spot designed for quiet evenings beneath the open sky.",
     image: starGazing,
   },
 ];

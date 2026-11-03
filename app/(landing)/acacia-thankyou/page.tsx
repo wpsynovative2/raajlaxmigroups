@@ -10,7 +10,7 @@ import groupLogo from "@/public/images/brand/raajlaxmi-group-logo.webp";
 export const metadata: Metadata = {
   title: { absolute: "Thank you – Rajlaxmi Acacia" },
   description:
-    "Your enquiry for Rajlaxmi Acacia, Saphale has been received. Our sales team will call you within one working day.",
+    "Your enquiry for Rajlaxmi Acacia, Saphale West has been received. Our sales team will call you within one working day.",
   robots: { index: false, follow: false },
 };
 
@@ -69,7 +69,7 @@ export default function AcaciaThankYouPage() {
           pricing, availability and floor plans.
         </p>
         <p className="mt-5 animate-fade-up text-sm text-white/55 [animation-delay:260ms]">
-          Saphale, Palghar <span className="mx-2 text-gold-500">|</span> 1 BHK homes and road-facing offices
+          {acacia.location} <span className="mx-2 text-gold-500">|</span> 1 BHK homes and road-facing offices
         </p>
         <div className="mt-9 flex animate-fade-up flex-wrap justify-center gap-3 [animation-delay:320ms]">
           <a

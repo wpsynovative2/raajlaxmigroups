@@ -28,6 +28,24 @@ npm run dev
 
 Without `GOOGLE_SCRIPT_URL`, forms still work in development: leads are printed to the terminal instead of being sent. In production, a missing URL shows the visitor an error message.
 
+## Deploying on Hostinger
+
+The site needs a Node.js server (the forms use server actions), so use a Hostinger plan with **Node.js Web Apps** (Business / Cloud web hosting) or a VPS. It cannot run on plain PHP shared hosting.
+
+In hPanel, create the Node.js app and set:
+
+| Setting | Value |
+| --- | --- |
+| Node.js version | 22.x (20.9 or newer is required) |
+| Install command | `npm install` |
+| Build command | `npm run build` |
+| Start command | `npm start` |
+| Environment variables | `GOOGLE_SCRIPT_URL`, `GOOGLE_SCRIPT_SECRET` |
+
+`npm run build` uses Next.js's webpack builder (`next build --webpack`) instead of Turbopack. Turbopack can crash with a "FATAL: An unexpected Turbopack error" panic on hosts with tight memory/thread limits; webpack is slower but stable there. Local `npm run dev` still uses Turbopack.
+
+Build-time packages (Tailwind, TypeScript, type definitions) are in `dependencies`, so the build still works if the host installs production dependencies only.
+
 ## Form delivery (Google Sheets)
 
 1. Create a Google Sheet → **Extensions → Apps Script** → paste [`google-apps-script/Code.gs`](google-apps-script/Code.gs).

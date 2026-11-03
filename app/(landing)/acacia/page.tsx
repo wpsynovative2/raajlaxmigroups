@@ -26,12 +26,12 @@ import overviewMain from "@/public/images/acacia/gallery/acacia-elevation.jpg";
 import overviewInset from "@/public/images/acacia/gallery/podium-amenities.jpg";
 
 export const metadata: Metadata = {
-  title: { absolute: "Rajlaxmi Acacia, Saphale | 1 BHK from ₹25.47L* | Offices from ₹21.50L*" },
+  title: { absolute: "Rajlaxmi Acacia, Saphale West | 1 BHK from ₹25.47L* | Offices from ₹21.50L*" },
   description:
-    "Rajlaxmi Acacia at Raajlaxmi Park, Saphale: OC-received 1 BHK homes from ₹25.47L* and road-facing offices from ₹21.50L*, a 5-minute walk from Saphale station. 2 BHK homes and shops sold out. MahaRERA P99000056103.",
+    `Rajlaxmi Acacia at Raajlaxmi Park, ${acacia.location}: OC-received 1 BHK homes from ₹25.47L* and road-facing offices from ₹21.50L*, a 5-minute walk from Saphale station. 2 BHK homes and shops sold out. MahaRERA P99000056103.`,
   alternates: { canonical: "/acacia/" },
   openGraph: {
-    title: "Rajlaxmi Acacia, Saphale",
+    title: `Rajlaxmi Acacia, ${acacia.location}`,
     description: "1 BHK homes from ₹25.47L* and road-facing offices from ₹21.50L*.",
     images: ["/images/og/acacia-og.jpg"],
   },
@@ -69,7 +69,7 @@ export default function AcaciaPage() {
           {/* Hero */}
           <section aria-labelledby="acacia-hero-title" className="relative overflow-hidden">
             <h1 id="acacia-hero-title" className="sr-only">
-              Codename Acacia at Raajlaxmi Park, Saphale: elegant 1 BHK residences starting from{" "}
+              Codename Acacia at Raajlaxmi Park, {acacia.location}: elegant 1 BHK residences starting from{" "}
               {acacia.prices.oneBhk}, offices starting from {acacia.prices.office}. 2 BHK homes and shops are sold
               out.
             </h1>
@@ -161,7 +161,7 @@ export default function AcaciaPage() {
                   source="Hero"
                   className="mt-[0.4cqw] rounded-full bg-olive-50 px-[1.8cqw] py-[0.7cqw] font-poppins text-[0.95cqw] font-semibold tracking-wider text-olive-800 uppercase shadow-lg transition hover:bg-white"
                 >
-                  Enquire now
+                  Get price details
                 </CallbackButton>
               </div>
             </div>
@@ -169,8 +169,18 @@ export default function AcaciaPage() {
 
           <BorderStrip />
 
-          {/* Overview + About */}
-          <LeafSection id="overview">
+          {/* Overview, running straight into offices so the leaf background stays unbroken */}
+          <LeafSection id="overview" className="!pt-10 !pb-0 sm:!pt-14">
+            {/* Quick enquiry: not data-reveal, so it is usable the moment the hero scrolls away */}
+            <div className="container-x mb-14 sm:mb-20">
+              <div className="rounded-2xl border border-olive-800/15 bg-white p-5 shadow-xl sm:p-7">
+                <p className="mb-5 flex items-center gap-2 font-poppins text-sm font-semibold text-olive-800">
+                  <PinIcon className="size-4 shrink-0" /> Rajlaxmi Acacia, {acacia.location}
+                </p>
+                <AcaciaLeadForm layout="inline" source="Overview form" />
+              </div>
+            </div>
+
             <div className="container-x grid items-center gap-14 lg:grid-cols-2 lg:gap-16">
               <div>
                 <AcaciaTitle>Overview</AcaciaTitle>
@@ -179,7 +189,7 @@ export default function AcaciaPage() {
                     The Acacia experience
                   </p>
                   <p className="mt-2 text-lg leading-relaxed text-olive-900/85">
-                    Thoughtfully planned homes and offices in a road-facing development at Raajlaxmi Park, Saphale.
+                    Thoughtfully planned homes and offices in a road-facing development at Raajlaxmi Park, {acacia.location}.
                   </p>
                 </div>
                 <ul className="mt-8 space-y-5" data-reveal>
@@ -199,7 +209,7 @@ export default function AcaciaPage() {
                   source="Overview"
                   className="mt-9 inline-flex items-center gap-2 rounded-full bg-olive-800 px-7 py-3 font-poppins font-semibold text-olive-50 transition hover:bg-olive-900"
                 >
-                  Book a site visit <ArrowRightIcon className="size-4" />
+                  Visit the sample flat <ArrowRightIcon className="size-4" />
                 </CallbackButton>
               </div>
 
@@ -230,7 +240,63 @@ export default function AcaciaPage() {
               </div>
             </div>
 
-            <div id="about-us" className="container-x mt-20 grid items-center gap-10 sm:mt-28 lg:grid-cols-2">
+            {/* Offices (shops are sold out) */}
+            {/* Laid out like the old site: price and copy sit over the artwork, either side of the shopper */}
+            <div className="relative mt-16 sm:mt-24">
+              {/* Phones: the overlay text would be too small, so it stacks above the artwork */}
+              <div className="container-x text-center md:hidden" data-reveal>
+                <p className="font-poppins text-2xl font-medium tracking-wide text-olive-800 uppercase">Office spaces</p>
+                <p className="mt-1 font-poppins text-[11px] font-medium tracking-[0.35em] text-olive-800 uppercase">
+                  Starting from
+                </p>
+                <p className="mt-1 font-poppins text-5xl font-medium text-[#4a2e22]">{acacia.prices.office}</p>
+                <p className="mt-3 inline-block rounded-full border border-olive-800/30 px-3 py-1 font-poppins text-[11px] font-medium tracking-[0.2em] text-olive-800 uppercase">
+                  Shops sold out
+                </p>
+                <p className="mx-auto mt-4 max-w-sm font-poppins text-sm leading-relaxed text-olive-900/85">
+                  Give your business an address that works for you. Rajlaxmi Acacia offers road-facing office spaces
+                  designed for visibility, accessibility, and everyday convenience.
+                </p>
+              </div>
+
+              <div className="@container relative">
+                <Image
+                  src={shopsOffices}
+                  alt="Road-facing shops and offices at Rajlaxmi Acacia with a shopper in the foreground"
+                  placeholder="blur"
+                  sizes="100vw"
+                  className="w-full"
+                />
+                <div className="absolute top-[11%] left-[10%] hidden w-[17.5%] text-center whitespace-nowrap md:block" data-reveal>
+                  <p className="font-poppins text-[2cqw] leading-tight font-medium tracking-wide text-olive-800 uppercase [text-shadow:0_0_12px_#fcf9de]">
+                    Office spaces
+                  </p>
+                  <p className="mt-[0.3cqw] font-poppins text-[0.78cqw] font-medium tracking-[0.35em] text-olive-800 uppercase">
+                    Starting from
+                  </p>
+                  <p className="font-poppins text-[3.3cqw] leading-tight font-medium text-[#4a2e22]">
+                    {acacia.prices.office}
+                  </p>
+                  <p className="mt-[0.4cqw] inline-block rounded-full border border-olive-800/30 bg-olive-50/70 px-[0.8cqw] py-[0.25cqw] font-poppins text-[0.7cqw] font-medium tracking-[0.2em] text-olive-800 uppercase">
+                    Shops sold out
+                  </p>
+                </div>
+                <p
+                  className="absolute top-[10%] right-[8.5%] hidden w-[18.5%] text-right font-poppins text-[0.82cqw] leading-[1.5] text-olive-900 md:block"
+                  data-reveal
+                >
+                  Give your business an address that works for you. Rajlaxmi Acacia offers road-facing office spaces
+                  designed for visibility, accessibility, and everyday convenience.
+                </p>
+              </div>
+            </div>
+          </LeafSection>
+
+          <BorderStrip />
+
+          {/* About */}
+          <LeafSection id="about-us">
+            <div className="container-x grid items-center gap-10 lg:grid-cols-2">
               <div>
                 <AcaciaTitle>About project</AcaciaTitle>
                 <div className="mt-6 space-y-4 text-lg leading-relaxed text-olive-900/85" data-reveal>
@@ -247,7 +313,7 @@ export default function AcaciaPage() {
                   source="About project"
                   className="mt-8 inline-flex items-center gap-2 rounded-full bg-olive-800 px-7 py-3 font-poppins font-semibold text-olive-50 transition hover:bg-olive-900"
                 >
-                  Who am I? <ArrowRightIcon className="size-4" />
+                  Get the full details <ArrowRightIcon className="size-4" />
                 </CallbackButton>
               </div>
               <div data-reveal className="lg:order-first">
@@ -290,7 +356,7 @@ export default function AcaciaPage() {
                 source="Highlights"
                 className="mt-10 inline-flex items-center gap-2 rounded-full border border-olive-50/60 bg-olive-50 px-7 py-3 font-poppins font-semibold text-olive-800 transition hover:bg-white"
               >
-                Enquire now <ArrowRightIcon className="size-4" />
+                Check available units <ArrowRightIcon className="size-4" />
               </CallbackButton>
             </div>
           </section>
@@ -323,57 +389,6 @@ export default function AcaciaPage() {
                   ))}
                 </Carousel>
               </div>
-            </div>
-          </section>
-
-          {/* Offices (shops are sold out) */}
-          {/* Laid out like the old site: price and copy sit over the artwork, either side of the shopper */}
-          <section className="relative bg-olive-50 bg-[url('/images/acacia/leaf-pattern.webp')] bg-[length:900px_auto]">
-            {/* Phones: the overlay text would be too small, so it stacks above the artwork */}
-            <div className="container-x pt-12 text-center md:hidden" data-reveal>
-              <p className="font-poppins text-2xl font-medium tracking-wide text-olive-800 uppercase">Office spaces</p>
-              <p className="mt-1 font-poppins text-[11px] font-medium tracking-[0.35em] text-olive-800 uppercase">
-                Starting from
-              </p>
-              <p className="mt-1 font-poppins text-5xl font-medium text-[#4a2e22]">{acacia.prices.office}</p>
-              <p className="mt-3 inline-block rounded-full border border-olive-800/30 px-3 py-1 font-poppins text-[11px] font-medium tracking-[0.2em] text-olive-800 uppercase">
-                Shops sold out
-              </p>
-              <p className="mx-auto mt-4 max-w-sm font-poppins text-sm leading-relaxed text-olive-900/85">
-                Give your business an address that works for you. Rajlaxmi Acacia offers road-facing office spaces
-                designed for visibility, accessibility, and everyday convenience.
-              </p>
-            </div>
-
-            <div className="@container relative">
-              <Image
-                src={shopsOffices}
-                alt="Road-facing shops and offices at Rajlaxmi Acacia with a shopper in the foreground"
-                placeholder="blur"
-                sizes="100vw"
-                className="w-full"
-              />
-              <div className="absolute top-[11%] left-[10%] hidden w-[17.5%] text-center whitespace-nowrap md:block" data-reveal>
-                <p className="font-poppins text-[2cqw] leading-tight font-medium tracking-wide text-olive-800 uppercase [text-shadow:0_0_12px_#fcf9de]">
-                  Office spaces
-                </p>
-                <p className="mt-[0.3cqw] font-poppins text-[0.78cqw] font-medium tracking-[0.35em] text-olive-800 uppercase">
-                  Starting from
-                </p>
-                <p className="font-poppins text-[3.3cqw] leading-tight font-medium text-[#4a2e22]">
-                  {acacia.prices.office}
-                </p>
-                <p className="mt-[0.4cqw] inline-block rounded-full border border-olive-800/30 bg-olive-50/70 px-[0.8cqw] py-[0.25cqw] font-poppins text-[0.7cqw] font-medium tracking-[0.2em] text-olive-800 uppercase">
-                  Shops sold out
-                </p>
-              </div>
-              <p
-                className="absolute top-[10%] right-[8.5%] hidden w-[18.5%] text-right font-poppins text-[0.82cqw] leading-[1.5] text-olive-900 md:block"
-                data-reveal
-              >
-                Give your business an address that works for you. Rajlaxmi Acacia offers road-facing office spaces
-                designed for visibility, accessibility, and everyday convenience.
-              </p>
             </div>
           </section>
 
@@ -420,9 +435,9 @@ export default function AcaciaPage() {
                         <CallbackButton
                           source={`Configuration: ${config.title}`}
                           interest={config.interest}
-                          className="mt-auto flex w-full items-center justify-center gap-2 border border-olive-50/40 py-3 font-poppins text-xs font-medium tracking-[0.2em] uppercase transition hover:bg-olive-50 hover:text-olive-800"
+                          className="mt-auto flex w-full items-center justify-center gap-2 border border-olive-50/40 py-3 font-poppins text-xs font-medium tracking-[0.2em] whitespace-nowrap uppercase transition lg:tracking-[0.08em] xl:tracking-[0.2em] hover:bg-olive-50 hover:text-olive-800"
                         >
-                          Get details <ArrowRightIcon className="size-4" />
+                          Get exact price <ArrowRightIcon className="size-4" />
                         </CallbackButton>
                       </>
                     )}
@@ -458,9 +473,12 @@ export default function AcaciaPage() {
           <section id="connectivity" className="bg-olive-800 py-16 sm:py-24">
             <div className="container-x">
               <AcaciaTitle tone="light">Connectivity</AcaciaTitle>
-              <div className="mt-12 grid gap-8 lg:grid-cols-2">
+              <p className="mt-4 flex items-center gap-2 font-poppins text-olive-50/85" data-reveal>
+                <PinIcon className="size-4 shrink-0" /> Raajlaxmi Park is in {acacia.location}.
+              </p>
+              <div className="mt-10 grid gap-8 lg:grid-cols-2">
                 <div data-reveal>
-                  <MapEmbed src={acacia.mapEmbed} title="Raajlaxmi Park, Saphale on Google Maps" className="h-[380px] lg:h-full lg:min-h-[460px]" />
+                  <MapEmbed src={acacia.mapEmbed} title="Raajlaxmi Park, Saphale West on Google Maps" className="h-[380px] lg:h-full lg:min-h-[460px]" />
                 </div>
                 <div className="grid gap-4 sm:grid-cols-2" data-reveal>
                   {nearby.map((group, i) => (
@@ -481,7 +499,7 @@ export default function AcaciaPage() {
                     source="Connectivity"
                     className="inline-flex items-center justify-center gap-2 rounded-full bg-olive-50 px-7 py-3 font-poppins font-semibold text-olive-800 transition hover:bg-white sm:col-span-2 sm:justify-self-start"
                   >
-                    Book a site visit <ArrowRightIcon className="size-4" />
+                    Plan your site visit <ArrowRightIcon className="size-4" />
                   </CallbackButton>
                 </div>
               </div>

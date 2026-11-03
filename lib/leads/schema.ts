@@ -8,7 +8,6 @@ export type LeadField =
   | "location"
   | "units"
   | "interest"
-  | "message"
   | "consent";
 
 export type LeadState = {

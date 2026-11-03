@@ -16,7 +16,7 @@ export function useCallbackForm() {
   return useContext(CallbackContext);
 }
 
-/** The "Request a call back" popup used by every CTA on the Acacia page. */
+/** The enquiry popup used by every CTA on the Acacia page. */
 export default function CallbackProvider({ children }: { children: ReactNode }) {
   const [request, setRequest] = useState<Request | null>(null);
   const openCallback = useCallback((next: Request) => setRequest(next), []);
@@ -38,10 +38,10 @@ export default function CallbackProvider({ children }: { children: ReactNode }) 
       >
         <div className="p-6 sm:p-8">
           <h2 id="callback-title" className="font-poppins text-2xl font-semibold text-olive-800 uppercase">
-            Request a call back
+            Get price & plan your visit
           </h2>
           <p className="mt-2 mb-6 text-sm text-olive-900/75">
-            Fill this in and our sales team will reach out with pricing and available units.
+            Share your details and our sales team will call you with pricing, available units and site visit timings.
           </p>
           {request && (
             <AcaciaLeadForm

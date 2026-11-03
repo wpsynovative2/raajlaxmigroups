@@ -40,6 +40,9 @@
   --animate-shimmer: shimmer 1.6s linear infinite;
   --animate-fade-up: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
   --animate-float-leaf: float-leaf 9s ease-in-out infinite;
+  --animate-nudge: nudge 3.6s ease-in-out infinite;
+  --animate-pulse-ring: pulse-ring 3.6s ease-out infinite;
+  --animate-sheen: sheen 3.6s ease-in-out infinite;
 
   @keyframes marquee {
     from {
@@ -65,6 +68,49 @@
     to {
       opacity: 1;
       transform: translateY(0);
+    }
+  }
+  /* The three below share one 3.6s cycle; the action bar staggers them so attention moves across it. */
+  @keyframes nudge {
+    0%,
+    32%,
+    100% {
+      transform: none;
+    }
+    8% {
+      transform: translateY(-3px) scale(1.14) rotate(-9deg);
+    }
+    16% {
+      transform: translateY(-2px) scale(1.1) rotate(7deg);
+    }
+    24% {
+      transform: translateY(-1px) scale(1.04) rotate(-3deg);
+    }
+  }
+  @keyframes pulse-ring {
+    0% {
+      transform: scale(0.8);
+      opacity: 0.6;
+    }
+    36%,
+    100% {
+      transform: scale(1.9);
+      opacity: 0;
+    }
+  }
+  @keyframes sheen {
+    0% {
+      opacity: 1;
+      transform: translateX(-120%) skewX(-16deg);
+    }
+    35% {
+      opacity: 1;
+      transform: translateX(420%) skewX(-16deg);
+    }
+    36%,
+    100% {
+      opacity: 0;
+      transform: translateX(420%) skewX(-16deg);
     }
   }
   @keyframes float-leaf {

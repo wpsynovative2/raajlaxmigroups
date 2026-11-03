@@ -61,7 +61,7 @@ export const ongoingProjects: OngoingProject[] = [
     region: "Saphale",
     location: "Raajlaxmi Park, Saphale (W)",
     summary:
-      "Thoughtfully planned 1 BHK homes and road-facing offices within Raajlaxmi Park. With OC received, ready amenities and a ready sample building, Acacia is a five-minute walk from Saphale railway station. 2 BHK homes and shops are sold out.",
+      "Thoughtfully planned 1 BHK homes and road-facing offices within Raajlaxmi Park, Saphale West, next to Virar. With OC received, ready amenities and a ready sample building, Acacia is a five-minute walk from Saphale railway station. 2 BHK homes and shops are sold out.",
     highlights: [
       "1 BHK from ₹25.47L*",
       "Offices from ₹21.50L*",

@@ -22,7 +22,6 @@ const FIELDS: LeadField[] = [
   "location",
   "units",
   "interest",
-  "message",
   "consent",
 ];
 const TRACKING_FIELDS = [
@@ -105,7 +104,7 @@ export async function submitLead(_prev: LeadState, formData: FormData): Promise<
   }
 
   const values = Object.fromEntries(
-    FIELDS.map((field) => [field, text(formData, field, field === "message" ? 2000 : 300)]),
+    FIELDS.map((field) => [field, text(formData, field, 300)]),
   ) as Record<LeadField, string>;
 
   // Honeypot: real visitors never see or fill this field.

@@ -24,6 +24,7 @@ export const acacia = {
   name: "Rajlaxmi Acacia",
   fullName: "Raajlaxmi Park — Acacia",
   project: "Raajlaxmi Park – Acacia",
+  location: "Saphale West, next to Virar",
   siteAddress: "Rajlaxxmi Park, Saphale, Mande, Maharashtra 401102",
   phones: ["8446002939", "8600402939"],
   whatsapp: "918600402939",

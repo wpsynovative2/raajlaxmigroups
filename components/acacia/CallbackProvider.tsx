@@ -1,12 +1,24 @@
 "use client";
 
-import { createContext, useCallback, useContext, useLayoutEffect, useMemo, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import Modal from "@/components/ui/Modal";
 import type { interestOptions } from "@/lib/data/acacia";
 import AcaciaLeadForm from "./AcaciaLeadForm";
 
 type Interest = (typeof interestOptions)[number];
 type Request = { interest?: Interest; source: string };
+
+const AUTO_OPEN_DELAY_MS = 5000;
 
 const CallbackContext = createContext<{ openCallback: (request: Request) => void }>({
   openCallback: () => {},
@@ -19,12 +31,29 @@ export function useCallbackForm() {
 /** The enquiry popup used by every CTA on the Acacia page. */
 export default function CallbackProvider({ children }: { children: ReactNode }) {
   const [request, setRequest] = useState<Request | null>(null);
-  const openCallback = useCallback((next: Request) => setRequest(next), []);
+  // Lives in a ref so it survives the page being hidden and shown again on client-side navigation.
+  const autoOpenDone = useRef(false);
+  const openCallback = useCallback((next: Request) => {
+    autoOpenDone.current = true;
+    setRequest(next);
+  }, []);
   const close = useCallback(() => setRequest(null), []);
   const value = useMemo(() => ({ openCallback }), [openCallback]);
 
   // Don't come back to an open popup after navigating away and returning.
   useLayoutEffect(() => () => setRequest(null), []);
+
+  // Open once per visit, unless the visitor has already opened it or is busy with a form or the gallery viewer.
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (autoOpenDone.current) return;
+      autoOpenDone.current = true;
+      const busy =
+        document.querySelector('[role="dialog"]') || document.activeElement?.matches("input, select, textarea");
+      if (!busy) setRequest({ source: "Auto popup" });
+    }, AUTO_OPEN_DELAY_MS);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <CallbackContext.Provider value={value}>

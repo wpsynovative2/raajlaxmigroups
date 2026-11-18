@@ -3,6 +3,7 @@
 import { useActionState, useEffect } from "react";
 import { submitLead } from "@/lib/leads/submit-lead";
 import { phoneError } from "@/lib/leads/phone";
+import { saveLeadUserData } from "@/lib/analytics";
 import {
   initialLeadState,
   recaptchaAction,
@@ -81,6 +82,10 @@ export function useLeadAction() {
     }
 
     const form = String(formData.get("form")) as LeadFormId;
+    // Acacia redirects to a thank-you page that sends these to GTM as user_data.
+    if (form === "acacia") {
+      saveLeadUserData(form, String(formData.get("phone") ?? ""), String(formData.get("email") ?? ""));
+    }
     formData.set("recaptchaToken", await getRecaptchaToken(recaptchaAction(form)));
     return submitLead(prev, formData);
   }, initialLeadState);

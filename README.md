@@ -55,7 +55,7 @@ Build-time packages (Tailwind, TypeScript, type definitions) are in `dependencie
 
 Each form writes to its own tab (`Acacia Leads`, `Website Enquiries`, `Contact Page`, `Redevelopment`), which is created automatically. Every lead includes the page URL, referrer and UTM / gclid / fbclid parameters. Submissions go through a server action (`lib/leads/submit-lead.ts`), so the script URL is never exposed to the browser. A hidden honeypot field filters basic spam bots.
 
-Acacia forms redirect to `/acacia-thankyou/`. Every successful lead pushes a `lead_submit` event to the GTM `dataLayer` (container `GTM-TF2LLXP4`), so it can be used as a conversion trigger.
+Acacia forms redirect to `/acacia-thankyou/`. Every successful lead pushes a `lead_submit` event to the GTM `dataLayer` (container `GTM-TF2LLXP4`), so it can be used as a conversion trigger. On `/acacia-thankyou/` the event also carries `user_data.email` and `user_data.phone_number` (`+91` + 10 digits) for enhanced conversions; the form saves them to `sessionStorage` on submit and the thank-you page reads and clears them.
 
 ## Where to edit content
 
